@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار تحديد المستوى — IELTS Academic</title>
+<style>
+  :root{
+    --primary:#0f4c81;--primary-dark:#0a355c;--accent:#e8a33d;--accent-light:#fdf3e2;
+    --bg:#f4f7fb;--card:#fff;--text:#1f2a37;--muted:#5b6878;--border:#e3e8ef;
+    --green:#1f8a55;--green-light:#e6f6ee;--red:#b42318;--red-light:#fdecea;--blue-light:#e7f0f8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;font-size:16px;min-height:100vh;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px;}
+  .screen{display:none;}
+  .screen.active{display:block;animation:fadeIn .4s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .start-card{background:var(--card);border-radius:20px;padding:44px 36px;box-shadow:0 8px 30px rgba(15,76,129,.1);text-align:center;margin-top:20px;}
+  .start-card .icon{width:72px;height:72px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:2rem;color:var(--accent);}
+  .start-card h1{font-size:1.7rem;color:var(--primary-dark);margin-bottom:10px;}
+  .start-card .sub{color:var(--muted);margin-bottom:24px;}
+  .start-card .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0;text-align:center;}
+  .info-grid .info-item{background:var(--blue-light);border-radius:12px;padding:14px;}
+  .info-grid .info-item b{display:block;color:var(--primary);font-size:1.3rem;}
+  .info-grid .info-item span{font-size:.82rem;color:var(--muted);}
+  @media(max-width:600px){.start-card .info-grid{grid-template-columns:1fr;}}
+  .start-card ul.notes{list-style:none;text-align:right;background:#fafcff;border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin:22px 0;}
+  .start-card ul.notes li{padding-right:22px;position:relative;margin-bottom:8px;font-size:.93rem;}
+  .start-card ul.notes li::before{content:"•";position:absolute;right:4px;color:var(--accent);font-size:1.3rem;top:0;}
+
+  .name-field{text-align:right;margin:22px 0;}
+  .name-field label{display:block;font-weight:700;color:var(--primary-dark);margin-bottom:8px;font-size:.95rem;}
+  .name-field input{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:.97rem;background:#fafcff;outline:none;transition:.2s;}
+  .name-field input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(15,76,129,.1);}
+  .name-field .hint{font-size:.82rem;color:var(--muted);margin-top:6px;}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--primary);color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;}
+  .btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  .btn.accent{background:var(--accent);color:#3a2500;}
+  .btn.accent:hover{background:#d9942e;}
+  .btn.ghost{background:transparent;color:var(--primary);border:2px solid var(--primary);}
+  .btn.ghost:hover{background:var(--primary);color:#fff;}
+  .btn.pdf{background:linear-gradient(135deg,#b42318,#dc2626);font-size:1.05rem;padding:16px 36px;box-shadow:0 4px 14px rgba(180,35,24,.35);}
+  .btn.pdf:hover{background:linear-gradient(135deg,#8f1c13,#b91c1c);}
+
+  .test-header{background:var(--card);border-radius:16px;padding:18px 24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(15,76,129,.07);border:1px solid var(--border);}
+  .test-header .top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+  .test-header h2{font-size:1.1rem;color:var(--primary-dark);}
+  .test-header .progress-text{font-size:.85rem;color:var(--muted);font-weight:600;}
+  .progress-bar{background:var(--border);border-radius:999px;height:8px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:20%;border-radius:999px;transition:width .4s ease;}
+
+  .section{display:none;}
+  .section.active{display:block;animation:fadeIn .35s ease;}
+  .section-title{font-size:1.35rem;color:var(--primary-dark);font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+  .section-title .badge{background:var(--primary);color:#fff;font-size:.75rem;padding:3px 10px;border-radius:999px;font-weight:700;}
+  .section-desc{color:var(--muted);font-size:.93rem;margin-bottom:22px;}
+
+  .passage{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:24px;box-shadow:0 2px 12px rgba(15,76,129,.06);direction:ltr;text-align:left;}
+  .passage h3{color:var(--primary-dark);font-size:1.1rem;margin-bottom:12px;font-family:Georgia,serif;}
+  .passage p{font-family:Georgia,"Times New Roman",serif;line-height:1.85;color:#2a3542;margin-bottom:12px;font-size:.97rem;}
+
+  .question{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 2px 8px rgba(15,76,129,.05);transition:.2s;}
+  .q-text{font-size:1rem;color:var(--text);margin-bottom:14px;font-weight:600;line-height:1.7;}
+  .q-text .q-num{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;width:26px;height:26px;border-radius:8px;font-size:.82rem;font-weight:800;margin-left:8px;flex-shrink:0;vertical-align:middle;}
+  .q-text.en{direction:ltr;text-align:left;font-family:Georgia,serif;font-weight:400;}
+  .q-text.en .q-num{margin-right:8px;margin-left:0;font-family:"Segoe UI",sans-serif;}
+  .options{display:grid;gap:8px;}
+  .options.en{direction:ltr;}
+  .option{display:flex;align-items:center;gap:10px;padding:11px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:.15s;background:#fafcff;font-size:.95rem;}
+  .option:hover{border-color:var(--primary);background:var(--blue-light);}
+  .option input{accent-color:var(--primary);width:18px;height:18px;flex-shrink:0;cursor:pointer;}
+  .option:has(input:checked){border-color:var(--primary);background:var(--blue-light);box-shadow:0 0 0 3px rgba(15,76,129,.08);}
+
+  .writing-area{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(15,76,129,.05);}
+  .writing-prompt{background:var(--accent-light);border-right:4px solid var(--accent);border-radius:10px;padding:16px 18px;margin-bottom:16px;font-size:.94rem;direction:ltr;text-align:left;font-family:Georgia,serif;color:#3a2500;}
+  .writing-prompt b{display:block;margin-bottom:6px;font-family:"Segoe UI",sans-serif;direction:rtl;text-align:right;color:#7a4d00;}
+  textarea{width:100%;min-height:260px;border:1.5px solid var(--border);border-radius:12px;padding:16px;font-family:Georgia,"Times New Roman",serif;font-size:.97rem;line-height:1.85;resize:vertical;direction:ltr;text-align:left;outline:none;transition:.2s;background:#fafcff;}
+  textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(15,76,129,.1);}
+  .word-count{text-align:left;font-size:.85rem;color:var(--muted);margin-top:8px;font-weight:600;}
+  .word-count.good{color:var(--green);}
+
+  .speaking-area{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:0 2px 8px rgba(15,76,129,.05);}
+  .speaking-prompt{background:var(--blue-light);border-right:4px solid var(--primary);border-radius:10px;padding:16px 18px;margin-bottom:18px;font-size:.94rem;direction:ltr;text-align:left;font-family:Georgia,serif;color:#0a355c;}
+  .speaking-prompt b{display:block;margin-bottom:6px;font-family:"Segoe UI",sans-serif;direction:rtl;text-align:right;color:var(--primary);}
+  .checklist{list-style:none;display:grid;gap:10px;}
+  .checklist li{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;background:#fafcff;transition:.15s;cursor:pointer;}
+  .checklist li:has(input:checked){border-color:var(--primary);background:var(--blue-light);}
+  .checklist input{accent-color:var(--primary);width:18px;height:18px;margin-top:3px;flex-shrink:0;cursor:pointer;}
+  .checklist span{font-size:.93rem;}
+
+  .nav-buttons{display:flex;justify-content:space-between;gap:14px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);}
+  .nav-buttons .btn{flex:1;max-width:200px;}
+  .nav-buttons #next-btn{margin-right:auto;}
+  .nav-buttons .btn.submit{background:var(--green);max-width:240px;}
+  .nav-buttons .btn.submit:hover{background:#166a41;}
+
+  .results-card{background:var(--card);border-radius:20px;padding:36px;margin-top:10px;box-shadow:0 8px 30px rgba(15,76,129,.1);}
+  .result-top{text-align:center;}
+  .band-display{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:170px;height:170px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;margin-bottom:16px;box-shadow:0 8px 24px rgba(15,76,129,.3);}
+  .band-display .label{font-size:.8rem;opacity:.85;}
+  .band-display .band{font-size:3rem;font-weight:900;color:var(--accent);line-height:1.1;}
+  .band-display .of{font-size:.8rem;opacity:.7;}
+  .summary{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto 26px;}
+
+  .breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0;}
+  .breakdown .bd-item{background:#fafcff;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+  .breakdown .bd-item .t{font-size:.82rem;color:var(--muted);margin-bottom:4px;}
+  .breakdown .bd-item .v{font-size:1.5rem;font-weight:900;color:var(--primary);}
+  .breakdown .bd-item .v small{font-size:.85rem;color:var(--muted);font-weight:600;}
+  .breakdown .bd-item.weak{background:var(--red-light);border-color:#f5c7c1;}
+  .breakdown .bd-item.weak .v{color:var(--red);}
+  .breakdown .bd-item.strong{background:var(--green-light);border-color:#b8e2ca;}
+  .breakdown .bd-item.strong .v{color:var(--green);}
+  @media(max-width:600px){.breakdown{grid-template-columns:1fr;}}
+
+  .recommendation{background:var(--accent-light);border-right:4px solid var(--accent);border-radius:12px;padding:16px 20px;text-align:right;margin:18px 0;font-size:.94rem;}
+  .recommendation b{color:#7a4d00;display:block;margin-bottom:6px;}
+
+  .pdf-instruction-box{
+    background:linear-gradient(135deg,#fff5f5,#ffe8e8);
+    border:2px solid var(--red);border-radius:16px;padding:22px 24px;margin:24px 0;
+    text-align:center;
+  }
+  .pdf-instruction-box h3{color:var(--red);font-size:1.1rem;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .pdf-instruction-box p{color:#5b1f1f;font-size:.92rem;margin-bottom:14px;line-height:1.7;}
+  .pdf-instruction-box ol{text-align:right;background:#fff;border-radius:10px;padding:14px 20px 14px 40px;margin:14px 0;font-size:.88rem;color:#333;}
+  .pdf-instruction-box ol li{margin-bottom:6px;}
+  .pdf-instruction-box ol li b{color:var(--red);}
+
+  .review-toggle{display:flex;justify-content:center;margin:22px 0 14px;}
+  .review-section{text-align:right;margin-top:8px;}
+  .review-block{border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden;}
+  .review-block summary{cursor:pointer;padding:14px 18px;font-weight:700;color:var(--primary);background:var(--blue-light);list-style:none;display:flex;align-items:center;gap:8px;font-size:.95rem;}
+  .review-block summary::-webkit-details-marker{display:none;}
+  .review-block summary::before{content:"▸";color:var(--accent);transition:.2s;}
+  .review-block[open] summary::before{content:"▾";}
+  .review-block .inner{padding:8px 18px 16px;}
+  .review-item{padding:12px 0;border-bottom:1px dashed var(--border);font-size:.9rem;}
+  .review-item:last-child{border-bottom:none;}
+  .review-item .rq{margin-bottom:8px;color:var(--text);font-weight:600;direction:ltr;text-align:left;font-family:Georgia,serif;}
+  .review-item .rq .n{color:var(--muted);font-family:"Segoe UI",sans-serif;margin-right:6px;}
+  .review-item .ans-line{display:flex;gap:8px;align-items:flex-start;margin-bottom:4px;font-size:.88rem;direction:ltr;text-align:left;}
+  .review-item .ans-line .tag{font-family:"Segoe UI",sans-serif;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap;direction:rtl;}
+  .review-item .ans-line .tag.ok{background:var(--green-light);color:var(--green);}
+  .review-item .ans-line .tag.bad{background:var(--red-light);color:var(--red);}
+  .review-item .ans-line .tag.correct{background:var(--blue-light);color:var(--primary);}
+  .review-item .explain{margin-top:8px;background:#fafcff;border-radius:8px;padding:8px 12px;font-size:.85rem;color:var(--muted);border-right:3px solid var(--accent);direction:rtl;text-align:right;font-family:"Segoe UI",sans-serif;}
+  .review-item.correct-item{border-right:3px solid var(--green);padding-right:10px;}
+  .review-item.wrong-item{border-right:3px solid var(--red);padding-right:10px;}
+
+  .essay-preview{background:#fafcff;border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:18px 0;direction:ltr;text-align:left;font-family:Georgia,serif;font-size:.93rem;line-height:1.85;white-space:pre-wrap;color:#2a3542;}
+
+  .result-actions{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+  footer{text-align:center;padding:28px 20px;color:var(--muted);font-size:.82rem;}
+
+  /* ============ PRINT / PDF STYLES ============ */
+  @media print{
+    @page { size:A4; margin:15mm 12mm; }
+    body{background:#fff;font-size:11px;line-height:1.6;color:#000;}
+    .wrap{max-width:100%;padding:0;}
+    .screen{display:none !important;}
+    #results-screen{display:block !important;}
+    .results-card{box-shadow:none;border-radius:0;padding:0;}
+    .result-actions, .pdf-instruction-box, .review-toggle, .nav-buttons, footer, #submit-status, .btn{display:none !important;}
+    .band-display{background:#0f4c81 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;width:120px;height:120px;box-shadow:none;}
+    .band-display .band{font-size:2rem;}
+    .breakdown{gap:8px;}
+    .breakdown .bd-item{padding:10px;}
+    .breakdown .bd-item.weak, .breakdown .bd-item.strong, .recommendation{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .review-block{border:1px solid #999;page-break-inside:auto;}
+    .review-block summary{background:#eef3f9 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;cursor:default;font-size:11px;padding:8px 12px;}
+    .review-block summary::before{display:none;}
+    .review-block .inner{display:block !important;padding:4px 12px 10px;}
+    details{display:block !important;}
+    details > *{display:block !important;}
+    .review-item{page-break-inside:avoid;font-size:10px;padding:8px 0;}
+    .review-item .rq{font-size:10px;}
+    .review-item .explain{font-size:9.5px;padding:6px 10px;background:#f3f6f9 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .essay-preview{font-size:10.5px;page-break-inside:auto;border:1px solid #ccc;}
+    .recommendation{page-break-inside:avoid;font-size:10px;}
+    .print-header{display:block !important;text-align:center;border-bottom:3px solid #0f4c81;padding-bottom:12px;margin-bottom:16px;}
+    .print-header h1{color:#0f4c81;font-size:16px;margin-bottom:6px;}
+    .print-header .meta{font-size:11px;color:#333;margin:3px 0;}
+    .print-header .meta b{color:#0a355c;}
+    .print-footer{display:block !important;margin-top:24px;padding-top:14px;border-top:2px solid #0f4c81;text-align:center;font-size:9.5px;color:#555;}
+    .section-title-print{color:#0f4c81;font-size:13px;font-weight:800;margin:16px 0 8px;padding-bottom:4px;border-bottom:2px solid #e8a33d;}
+    h2,h3{page-break-after:avoid;}
+    .no-print{display:none !important;}
+  }
+  .print-header, .print-footer{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="start-screen" class="screen active">
+    <div class="start-card">
+      <div class="icon">🎓</div>
+      <h1>اختبار تحديد المستوى</h1>
+      <p class="sub">IELTS Academic — تقدير تقريبي لمستواك الحالي قبل بدء الكورس</p>
+      <div class="info-grid">
+        <div class="info-item"><b>5</b><span>أقسام</span></div>
+        <div class="info-item"><b>28</b><span>سؤال موضوعي</span></div>
+        <div class="info-item"><b>~45</b><span>دقيقة</span></div>
+      </div>
+      <div class="name-field">
+        <label for="student-name">اسمك الكامل *</label>
+        <input type="text" id="student-name" placeholder="مثال: أحمد محمد" required>
+        <p class="hint">سيظهر اسمك في ملف PDF النهائي الذي سترسله للمعلم.</p>
+      </div>
+      <ul class="notes">
+        <li><b>القسم 1:</b> المفردات — 10 أسئلة اختيار من متعدد.</li>
+        <li><b>القسم 2:</b> القواعد — 10 أسئلة اختيار من متعدد.</li>
+        <li><b>القسم 3:</b> القراءة — نص + 8 أسئلة.</li>
+        <li><b>القسم 4:</b> الكتابة — مقال Task 2 (تقييم ذاتي).</li>
+        <li><b>القسم 5:</b> المحادثة — سؤال Part 2 + قائمة تقييم ذاتي.</li>
+        <li>بعد الانتهاء يمكنك حفظ النتيجة كملف PDF وإرساله للمعلم.</li>
+      </ul>
+      <button class="btn accent" onclick="startTest()">ابدأ الاختبار ←</button>
+    </div>
+  </div>
+
+  <div id="test-screen" class="screen">
+    <div class="test-header">
+      <div class="top">
+        <h2 id="current-title">القسم 1</h2>
+        <span class="progress-text" id="progress-text">القسم 1 من 5</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+    <div id="sections-container"></div>
+    <div class="nav-buttons">
+      <button class="btn ghost" id="prev-btn" onclick="prevSection()">→ السابق</button>
+      <button class="btn" id="next-btn" onclick="nextSection()">التالي ←</button>
+    </div>
+  </div>
+
+  <div id="results-screen" class="screen">
+    <div id="results-content"></div>
+  </div>
+
+</div>
+<footer>اختبار تحديد المستوى — تقدير تقريبي وليس درجة آيلتس رسمية</footer>
+
+<script>
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+
+const testData = {
+  sections: [
+    { id:'vocab', title:'القسم 1: المفردات', badge:'10 أسئلة', description:'اختر الكلمة الأنسب لإكمال كل جملة.', type:'mc',
+      questions:[
+        { q:'The government plans to ___ more funding to education.', options:['allocate','derive','restrict','decline'], correct:0, explain:'allocate funding = تخصيص الأموال.' },
+        { q:'There has been a ___ rise in online shopping.', options:['significant','widespread','crucial','evident'], correct:0, explain:'a significant rise = ارتفاع كبير.' },
+        { q:'Researchers have ___ a clear link between sleep and memory.', options:['established','implemented','allocated','declined'], correct:0, explain:'establish a link = يثبت صلة.' },
+        { q:'Some countries ___ the use of single-use plastic bags.', options:['restrict','derive','emphasise','tend'], correct:0, explain:'restrict the use = يقيّد الاستخدام.' },
+        { q:'It is ___ that air pollution is worsening in major cities.', options:['evident','substantial','diverse','crucial'], correct:0, explain:'It is evident that = من الواضح أن.' },
+        { q:'Technology can ___ the learning experience for students.', options:['enhance','decline','restrict','tend'], correct:0, explain:'enhance the experience = يُحسّن التجربة.' },
+        { q:'The main ___ of regular exercise is improved mental health.', options:['benefit','consequence','approach','factor'], correct:0, explain:'the main benefit = الفائدة الرئيسية.' },
+        { q:'Young people ___ to spend more time on social media than older generations.', options:['tend','ensure','respond','derive'], correct:0, explain:'tend to + base verb = يميل إلى.' },
+        { q:'The company must ___ the new safety rules immediately.', options:['implement','analyse','derive','decline'], correct:0, explain:'implement rules = يُطبّق القواعد.' },
+        { q:'The study will ___ both sides of the argument.', options:['analyse','implement','restrict','ensure'], correct:0, explain:'analyse both sides = يُحلّل الجانبين.' }
+      ]
+    },
+    { id:'grammar', title:'القسم 2: القواعد', badge:'10 أسئلة', description:'اختر الشكل الصحيح لإكمال كل جملة.', type:'mc',
+      questions:[
+        { q:'If the government ___ earlier, the crisis would have been avoided.', options:['had invested','invested','would invest','invests'], correct:0, explain:'Third Conditional: If + past perfect, would have + V3.' },
+        { q:'Public transport ___ by local councils in the near future.', options:['should be improved','should improve','should have improved','should be improving'], correct:0, explain:'المبني للمجهول: should be + V3.' },
+        { q:'Students ___ study abroad often become more independent.', options:['who','which','whose','whom'], correct:0, explain:'who للضمير الوصلي للأشخاص.' },
+        { q:'___ technology has benefits, it also creates distractions.', options:['Although','However','Therefore','Moreover'], correct:0, explain:'Although + clause = على الرغم من أن.' },
+        { q:'If schools introduced cooking lessons, children ___ healthier habits.', options:['would form','will form','would have formed','form'], correct:0, explain:'Second Conditional: If + past simple, would + base.' },
+        { q:'The new policy, ___ was introduced in 2020, has reduced emissions.', options:['which','who','whose','where'], correct:0, explain:'which للضمير الوصلي غير التحديدي للأشياء.' },
+        { q:'___ considered both views, I believe that free education is essential.', options:['Having','Faced','Having been','Having had'], correct:0, explain:'Participle: Having + V3.' },
+        { q:'The report ___ the need for stricter laws.', options:['emphasises','emphasise','emphasising','emphasised'], correct:0, explain:'الفاعل مفرد غائب → الفعل + s.' },
+        { q:'Governments must ___ quickly to climate change.', options:['respond','responds','responding','responded'], correct:0, explain:'بعد modal → مصدر.' },
+        { q:'Many medicines ___ from plants.', options:['are derived','derive','deriving','derived'], correct:0, explain:'المبني للمجهول: are + V3.' }
+      ]
+    },
+    { id:'reading', title:'القسم 3: القراءة', badge:'8 أسئلة', description:'اقرأ النص التالي ثم أجب عن الأسئلة.', type:'mc',
+      passage:{ title:'Urban Green Spaces: A Necessity or a Luxury?', paragraphs:[
+        'In recent decades, cities around the world have expanded rapidly, and with this expansion has come a growing debate about the role of green spaces in urban environments. Some city planners view parks and gardens as essential infrastructure, while others dismiss them as luxuries that consume valuable land and resources.',
+        'Advocates of urban green spaces point to a wide range of benefits. Research conducted in several European cities has shown a correlation between access to parks and reduced levels of stress among residents. Furthermore, green areas can help mitigate the effects of air pollution and provide a natural cooling system during heatwaves. From an economic perspective, properties located near well-maintained parks often command higher prices, and green spaces can attract tourism and local business activity.',
+        'However, critics argue that the costs of maintaining these areas are substantial. In cities facing housing shortages, allocating large plots of land to parks may appear impractical. They also note that green spaces are not always distributed equitably: wealthier neighbourhoods tend to have better access to parks than poorer ones, which raises questions of social justice.',
+        'The author\'s view is that while green spaces do require investment, they should be considered a fundamental component of sustainable urban planning rather than an optional extra. As cities continue to grow, the challenge for policymakers will be to ensure that the benefits of green spaces are shared fairly across all communities.'
+      ]},
+      questions:[
+        { q:'What is the main purpose of the passage?', options:['To argue that green spaces waste resources','To present both sides of the debate and offer a conclusion','To describe the architecture of European cities','To compare parks in different countries'], correct:1, explain:'النص يعرض الجانبين ثم يقدم رأي الكاتب.' },
+        { q:'According to the passage, which benefit of green spaces is mentioned?', options:['Increased property prices only','Reduced stress and natural cooling','Higher employment in rural areas','Improved public transport'], correct:1, explain:'الفقرة الثانية تذكر الفائدتين.' },
+        { q:'True / False / Not Given: The author believes green spaces are equally distributed across all cities.', options:['True','False','Not Given'], correct:1, explain:'False — النص يقول "not always distributed equitably".' },
+        { q:'True / False / Not Given: Some studies show a correlation between green spaces and reduced stress.', options:['True','False','Not Given'], correct:0, explain:'True — مذكور صريحاً في الفقرة الثانية.' },
+        { q:'True / False / Not Given: The passage mentions specific costs of maintaining green spaces in every city.', options:['True','False','Not Given'], correct:2, explain:'Not Given — لا يذكر أرقاماً محددة.' },
+        { q:'The word "mitigate" in the passage is closest in meaning to:', options:['increase','reduce','ignore','describe'], correct:1, explain:'mitigate = reduce / lessen.' },
+        { q:'What does the author suggest about future urban planning?', options:['Green spaces should be eliminated for housing','Policymakers should ensure benefits are shared fairly','Only wealthy neighbourhoods should have parks','Green spaces should be replaced by shopping centres'], correct:1, explain:'الفقرة الأخيرة تنص على ذلك صريحاً.' },
+        { q:'Which of the following is NOT mentioned as a benefit of green spaces?', options:['Reduced stress','Natural cooling during heatwaves','Higher property prices','Improved public transport'], correct:3, explain:'Improved public transport غير مذكور.' }
+      ]
+    },
+    { id:'writing', title:'القسم 4: الكتابة', badge:'تقييم ذاتي', description:'اكتب مقالاً من 250 كلمة تقريباً.', type:'writing',
+      prompt:'Some people believe that university education should be free for all students. To what extent do you agree or disagree?',
+      promptNote:'اكتب 250 كلمة على الأقل. استخدم: مقدمة + فقرتي Body + خاتمة.'
+    },
+    { id:'speaking', title:'القسم 5: المحادثة', badge:'تقييم ذاتي', description:'سجّل إجابتك ثم قيّم أداءك.', type:'speaking',
+      prompt:'Describe a book you have read that you enjoyed. You should say: what the book was about, when you read it, why you enjoyed it, and explain why you would recommend it to others.',
+      checklist:[
+        'تحدثت لمدة دقيقتين تقريباً دون توقف طويل.',
+        'استخدمت مفردات متنوعة ووصفية.',
+        'استخدمت جملة وصلية واحدة على الأقل (which / who / that).',
+        'أعطيت أسباباً وأمثلة، وليس مجرد وصف سطحي.',
+        'نظّمت إجابتي: مقدمة ← تفاصيل ← سبب ← توصية.',
+        'لم أقرأ من ورقة ولم أحفظ الإجابة مسبقاً.'
+      ]
+    }
+  ]
+};
+
+let currentSection = 0;
+let studentName = '';
+let submissionDate = '';
+
+function startTest() {
+  const nameInput = document.getElementById('student-name');
+  const name = nameInput ? nameInput.value.trim() : '';
+  if (!name) { alert('الرجاء إدخال اسمك الكامل قبل بدء الاختبار.'); nameInput.focus(); return; }
+  studentName = name;
+  submissionDate = new Date().toLocaleString('ar-EG',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  buildAllSections();
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('test-screen').classList.add('active');
+  showSection(0);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function buildAllSections() {
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+  testData.sections.forEach((section, si) => {
+    const div = document.createElement('div');
+    div.className = 'section' + (si === 0 ? ' active' : '');
+    div.id = 'section-' + si;
+    div.innerHTML = buildSectionHTML(section, si);
+    container.appendChild(div);
+  });
+  const ta = document.getElementById('writing-textarea');
+  if (ta) ta.addEventListener('input', updateWordCount);
+}
+
+function buildSectionHTML(section, si) {
+  let html = `<h2 class="section-title">${section.title} <span class="badge">${section.badge}</span></h2>`;
+  html += `<p class="section-desc">${section.description}</p>`;
+  if (section.type === 'mc') {
+    if (section.passage) {
+      html += `<div class="passage"><h3>${section.passage.title}</h3>`;
+      section.passage.paragraphs.forEach(p => { html += `<p>${p}</p>`; });
+      html += `</div>`;
+    }
+    section.questions.forEach((q, qi) => {
+      const englishQ = /^[\x00-\x7F]/.test(q.q);
+      html += `<div class="question">`;
+      html += `<p class="q-text ${englishQ ? 'en' : ''}"><span class="q-num">${qi+1}</span>${q.q}</p>`;
+      html += `<div class="options en">`;
+      q.options.forEach((opt, oi) => {
+        html += `<label class="option"><input type="radio" name="q_${si}_${qi}" value="${oi}"><span>${opt}</span></label>`;
+      });
+      html += `</div></div>`;
+    });
+  }
+  if (section.type === 'writing') {
+    html += `<div class="writing-area">`;
+    html += `<div class="writing-prompt"><b>Writing Task 2:</b>${section.prompt}</div>`;
+    html += `<p style="font-size:.85rem;color:var(--muted);margin-bottom:12px;">${section.promptNote}</p>`;
+    html += `<textarea id="writing-textarea" placeholder="Write your essay here..."></textarea>`;
+    html += `<div class="word-count" id="word-count">0 كلمة</div>`;
+    html += `</div>`;
+  }
+  if (section.type === 'speaking') {
+    html += `<div class="speaking-area">`;
+    html += `<div class="speaking-prompt"><b>Speaking Part 2:</b>${section.prompt}</div>`;
+    html += `<p style="font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:12px;">قيّم أداءك بعد التسجيل:</p>`;
+    html += `<ul class="checklist">`;
+    section.checklist.forEach((item, ii) => {
+      html += `<li><input type="checkbox" id="speak_${si}_${ii}"><span>${item}</span></li>`;
+    });
+    html += `</ul></div>`;
+  }
+  return html;
+}
+
+function updateWordCount() {
+  const ta = document.getElementById('writing-textarea');
+  const counter = document.getElementById('word-count');
+  if (!ta || !counter) return;
+  const words = ta.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  counter.textContent = words + ' كلمة';
+  counter.classList.toggle('good', words >= 250);
+}
+
+function showSection(index) {
+  document.querySelectorAll('.section').forEach((s, i) => s.classList.toggle('active', i === index));
+  currentSection = index;
+  updateHeader();
+  updateNavButtons();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function updateHeader() {
+  const section = testData.sections[currentSection];
+  document.getElementById('current-title').textContent = section.title;
+  document.getElementById('progress-text').textContent = `القسم ${currentSection + 1} من ${testData.sections.length}`;
+  document.getElementById('progress-fill').style.width = ((currentSection + 1) / testData.sections.length * 100) + '%';
+}
+
+function updateNavButtons() {
+  document.getElementById('prev-btn').disabled = currentSection === 0;
+  const nextBtn = document.getElementById('next-btn');
+  if (currentSection === testData.sections.length - 1) {
+    nextBtn.textContent = 'عرض النتيجة ✓';
+    nextBtn.classList.add('submit');
+  } else {
+    nextBtn.textContent = 'التالي ←';
+    nextBtn.classList.remove('submit');
+  }
+}
+
+function prevSection() { if (currentSection > 0) showSection(currentSection - 1); }
+function nextSection() {
+  if (currentSection < testData.sections.length - 1) showSection(currentSection + 1);
+  else confirmSubmit();
+}
+
+function confirmSubmit() {
+  let unanswered = 0;
+  testData.sections.forEach((section, si) => {
+    if (section.type === 'mc') section.questions.forEach((q, qi) => {
+      if (!document.querySelector(`input[name="q_${si}_${qi}"]:checked`)) unanswered++;
+    });
+  });
+  if (unanswered > 0) {
+    if (!confirm(`لديك ${unanswered} سؤالاً بدون إجابة. هل تريد إرسال الاختبار الآن؟`)) return;
+  }
+  submitTest();
+}
+
+function scoreAll() {
+  let totalCorrect = 0, totalMC = 0;
+  const breakdown = {}, reviews = {};
+  testData.sections.forEach((section, si) => {
+    if (section.type === 'mc') {
+      breakdown[section.id] = { correct: 0, total: 0, title: section.title };
+      reviews[section.id] = [];
+      section.questions.forEach((q, qi) => {
+        totalMC++;
+        breakdown[section.id].total++;
+        const sel = document.querySelector(`input[name="q_${si}_${qi}"]:checked`);
+        const userAns = sel ? parseInt(sel.value) : null;
+        const isCorrect = userAns === q.correct;
+        if (isCorrect) { totalCorrect++; breakdown[section.id].correct++; }
+        reviews[section.id].push({ q:q.q, qi, userAns, correct:q.correct, options:q.options, isCorrect, explain:q.explain });
+      });
+    }
+  });
+  const writingTA = document.getElementById('writing-textarea');
+  const writingWords = writingTA ? writingTA.value.trim().split(/\s+/).filter(w => w).length : 0;
+  const writingText = writingTA ? writingTA.value.trim() : '';
+  const speakingChecks = [];
+  const speakIdx = testData.sections.findIndex(s => s.type === 'speaking');
+  const speakSec = testData.sections[speakIdx];
+  if (speakSec) speakSec.checklist.forEach((item, ii) => {
+    const cb = document.getElementById(`speak_${speakIdx}_${ii}`);
+    speakingChecks.push({ item, checked: cb ? cb.checked : false });
+  });
+  return { totalCorrect, totalMC, breakdown, reviews, writingWords, writingText, speakingChecks };
+}
+
+function estimateBand(score, total) {
+  if (score >= 26) return '7.0+';
+  if (score >= 23) return '6.5';
+  if (score >= 20) return '6.0';
+  if (score >= 17) return '5.5';
+  if (score >= 13) return '5.0';
+  if (score >= 9)  return '4.5';
+  return '4.0 أو أقل';
+}
+
+async function submitTest() {
+  const result = scoreAll();
+  showResults(result);
+}
+
+async function sendToTeacher(result) {
+  const statusEl = document.getElementById('submit-status');
+  if (!FORMSPREE_ENDPOINT || FORMSPREE_ENDPOINT.includes('YOUR_FORM_ID')) {
+    if (statusEl) {
+      statusEl.className = 'submit-status warn';
+      statusEl.innerHTML = `<span class="icon">📄</span><div><strong>وضع الحفظ المحلي فقط.</strong><br>لم يُعد رابط Formspree بعد — النتيجة معروضة ويمكنك حفظها كـ PDF وإرسالها للمعلم يدوياً.</div>`;
+    }
+    return;
+  }
+  if (statusEl) {
+    statusEl.className = 'submit-status sending';
+    statusEl.innerHTML = `<div class="spin"></div><div>جارٍ إرسال النتيجة إلى المعلم...</div>`;
+  }
+  const payload = {
+    _subject: `نتيجة اختبار IELTS — ${studentName}`,
+    student_name: studentName, submitted_at: submissionDate,
+    total_score: `${result.totalCorrect} / ${result.totalMC}`,
+    band_estimate: estimateBand(result.totalCorrect, result.totalMC),
+    vocab_score: `${result.breakdown.vocab.correct} / ${result.breakdown.vocab.total}`,
+    grammar_score: `${result.breakdown.grammar.correct} / ${result.breakdown.grammar.total}`,
+    reading_score: `${result.breakdown.reading.correct} / ${result.breakdown.reading.total}`,
+    writing_word_count: result.writingWords,
+    writing_text: result.writingText || '(لم يكتب)',
+    speaking_checklist: result.speakingChecks.map(c => `${c.checked ? '✓' : '✗'} ${c.item}`).join('\n')
+  };
+  try {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (response.ok) {
+      if (statusEl) {
+        statusEl.className = 'submit-status success';
+        statusEl.innerHTML = `<span class="icon">✅</span><div><strong>تم إرسال النتيجة إلى المعلم.</strong><br>يمكنك أيضاً حفظ نسخة PDF أدناه.</div>`;
+      }
+    } else throw new Error('HTTP ' + response.status);
+  } catch (err) {
+    if (statusEl) {
+      statusEl.className = 'submit-status error';
+      statusEl.innerHTML = `<span class="icon">❌</span><div><strong>تعذّر الإرسال التلقائي.</strong><br>احفظ النتيجة كـ PDF وأرسلها للمعلم يدوياً.</div>`;
+    }
+  }
+}
+
+function buildDetailsText(result) {
+  const sectionNames = { vocab:'المفردات', grammar:'القواعد', reading:'القراءة' };
+  let text = '';
+  Object.keys(result.reviews).forEach(key => {
+    text += `\n=== ${sectionNames[key]} ===\n`;
+    result.reviews[key].forEach(r => {
+      const studentAns = r.userAns === null ? 'لم يُجب' : r.options[r.userAns];
+      const correctAns = r.options[r.correct];
+      text += `Q${r.qi + 1}: ${r.q}\n  إجابة الطالب: ${studentAns} ${r.isCorrect ? '✓' : '✗'}\n`;
+      if (!r.isCorrect) text += `  الإجابة الصحيحة: ${correctAns}\n`;
+    });
+  });
+  return text;
+}
+
+function showResults(result) {
+  const band = estimateBand(result.totalCorrect, result.totalMC);
+  const pct = Math.round((result.totalCorrect / result.totalMC) * 100);
+
+  let breakdownHTML = '';
+  ['vocab','grammar','reading'].forEach(key => {
+    const b = result.breakdown[key];
+    if (!b) return;
+    const ratio = b.correct / b.total;
+    let cls = '';
+    if (ratio < 0.5) cls = 'weak'; else if (ratio >= 0.75) cls = 'strong';
+    const label = key === 'vocab' ? 'المفردات' : key === 'grammar' ? 'القواعد' : 'القراءة';
+    breakdownHTML += `<div class="bd-item ${cls}"><div class="t">${label}</div><div class="v">${b.correct}<small>/${b.total}</small></div></div>`;
+  });
+
+  let weakestKey = null, weakestRatio = 1;
+  ['vocab','grammar','reading'].forEach(key => {
+    const b = result.breakdown[key];
+    if (!b) return;
+    const ratio = b.correct / b.total;
+    if (ratio < weakestRatio) { weakestRatio = ratio; weakestKey = key; }
+  });
+  const weakNames = { vocab:'المفردات', grammar:'القواعد', reading:'القراءة' };
+  const recommendations = {
+    vocab:'راجع الوحدة 1: احفظ 5 كلمات يومياً داخل تركيبات، واكتب جملتين لكل كلمة.',
+    grammar:'راجع الوحدة 2: ركّز على التراكيب الأربعة (الشرطية، المجهول، الوصلية، الربط).',
+    reading:'راجع الوحدة 5: طبّق قاعدة T/F/NG بدقة، وتدرّب على إدارة الوقت.'
+  };
+  const writingMsg = result.writingWords === 0 ? 'لم تكتب مقالاً.' : result.writingWords >= 250 ? `كتبت ${result.writingWords} كلمة — جيد.` : `كتبت ${result.writingWords} كلمة فقط — أقل من 250.`;
+  const checkedCount = result.speakingChecks.filter(c => c.checked).length;
+  const totalChecks = result.speakingChecks.length;
+  const speakingMsg = checkedCount === 0 ? 'لم تقيّم أداءك في قسم المحادثة.' : `أتممت ${checkedCount} من ${totalChecks} معايير التقييم الذاتي.`;
+
+  // ============ PRINT HEADER ============
+  const printHeader = `
+    <div class="print-header">
+      <h1>تقرير اختبار تحديد المستوى — IELTS Academic</h1>
+      <div class="meta"><b>اسم الطالب:</b> ${escapeHTML(studentName)}</div>
+      <div class="meta"><b>تاريخ الإرسال:</b> ${submissionDate}</div>
+      <div class="meta"><b>الدرجة:</b> ${result.totalCorrect} / ${result.totalMC} — التقدير التقريبي: Band ${band}</div>
+    </div>
+  `;
+
+  // ============ SPEAKING CHECKLIST (for print) ============
+  let speakingPrintHTML = '';
+  if (result.speakingChecks.length) {
+    speakingPrintHTML = `<h2 class="section-title-print">القسم 5: المحادثة — التقييم الذاتي</h2>
+      <ul style="list-style:none;padding:0;margin:0;font-size:11px;">
+        ${result.speakingChecks.map(c => `<li style="padding:4px 0;">${c.checked ? '✅' : '❌'} ${escapeHTML(c.item)}</li>`).join('')}
+      </ul>`;
+  }
+
+  // ============ ESSAY (for print) ============
+  let essayPrintHTML = '';
+  if (result.writingText) {
+    essayPrintHTML = `<h2 class="section-title-print">القسم 4: الكتابة — مقال الطالب (${result.writingWords} كلمة)</h2>
+      <div class="essay-preview">${escapeHTML(result.writingText)}</div>`;
+  } else {
+    essayPrintHTML = `<h2 class="section-title-print">القسم 4: الكتابة</h2>
+      <p style="font-size:11px;color:#666;font-style:italic;">لم يكتب الطالب مقالاً.</p>`;
+  }
+
+  const printFooter = `
+    <div class="print-footer">
+      هذا التقرير صادر آلياً من اختبار تحديد المستوى — IELTS Academic. تقدير تقريبي وليس درجة آيلتس رسمية.<br>
+      تم إنشاؤه في: ${submissionDate}
+    </div>
+  `;
+
+  const resultsHTML = `
+    <div class="results-card">
+      <div class="result-top">
+        <div class="band-display">
+          <span class="label">التقدير التقريبي</span>
+          <span class="band">${band}</span>
+          <span class="of">من 9.0</span>
+        </div>
+        <p class="summary">
+          أجبت عن <strong>${result.totalCorrect}</strong> من <strong>${result.totalMC}</strong> سؤالاً موضوعياً (${pct}%).
+          التقدير مبني على الأسئلة الموضوعية فقط وليس درجة آيلتس رسمية.
+        </p>
+      </div>
+
+      <div id="submit-status" class="submit-status sending">
+        <div class="spin"></div><div>جارٍ إرسال النتيجة إلى المعلم...</div>
+      </div>
+
+      <div class="breakdown">${breakdownHTML}</div>
+
+      ${weakestKey && weakestRatio < 0.75 ? `
+        <div class="recommendation">
+          <b>📌 أضعف منطقة: ${weakNames[weakestKey]}</b>${recommendations[weakestKey]}
+        </div>` : `
+        <div class="recommendation" style="background:var(--green-light);border-color:var(--green);">
+          <b style="color:var(--green);">✅ مستوى متوازن</b>
+          نتائجك جيدة في جميع الأقسام. ركّز على الكتابة والمحادثة للوصول إلى 6.5.
+        </div>`
+      }
+
+      <div class="recommendation" style="background:var(--blue-light);border-color:var(--primary);">
+        <b style="color:var(--primary);">✍️ القسم 4 — الكتابة</b>${writingMsg}
+      </div>
+      <div class="recommendation" style="background:var(--accent-light);border-color:var(--accent);">
+        <b style="color:#7a4d00;">🗣️ القسم 5 — المحادثة</b>${speakingMsg}
+      </div>
+
+      <div class="pdf-instruction-box no-print">
+        <h3>📄 احفظ نتيجتك كملف PDF وأرسلها للمعلم</h3>
+        <p>اضغط الزر الأحمر أدناه، وفي نافذة الطباعة اختر <b>"Save as PDF"</b> أو <b>"حفظ كـ PDF"</b> كطابعة.</p>
+        <ol>
+          <li>اضغط زر <b>حفظ النتيجة كـ PDF</b> (سيظهر ملف الطباعة).</li>
+          <li>في قائمة <b>الطابعة / Printer</b>، اختر <b>Save as PDF</b>.</li>
+          <li>اضغط <b>حفظ / Save</b> واختر مكان الحفظ على جهازك.</li>
+          <li>أرسل الملف الناتج إلى معلمك عبر البريد أو واتساب.</li>
+        </ol>
+        <button class="btn pdf" onclick="savePDF()">📄 حفظ النتيجة كـ PDF</button>
+      </div>
+
+      <div class="review-toggle no-print">
+        <button class="btn ghost" onclick="toggleReview()" id="review-toggle-btn">عرض مراجعة الإجابات ▾</button>
+      </div>
+      <div id="review-container" style="display:none;">${buildReviewHTML(result.reviews)}</div>
+
+      <div class="result-actions no-print">
+        <button class="btn accent" onclick="restartTest()">إعادة الاختبار</button>
+        <button class="btn ghost" onclick="savePDF()">📄 حفظ PDF</button>
+      </div>
+
+      ${printHeader}
+      <h2 class="section-title-print">ملخص الدرجات</h2>
+      <div class="breakdown">${breakdownHTML}</div>
+      <h2 class="section-title-print">مراجعة الإجابات</h2>
+      ${buildReviewHTML(result.reviews, true)}
+      ${essayPrintHTML}
+      ${speakingPrintHTML}
+      ${printFooter}
+    </div>
+  `;
+
+  document.getElementById('results-content').innerHTML = resultsHTML;
+  document.getElementById('test-screen').classList.remove('active');
+  document.getElementById('results-screen').classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  sendToTeacher(result);
+}
+
+function buildReviewHTML(reviews, forPrint) {
+  let html = '<div class="review-section">';
+  ['vocab','grammar','reading'].forEach(key => {
+    const list = reviews[key];
+    if (!list) return;
+    const correctCount = list.filter(r => r.isCorrect).length;
+    const label = key === 'vocab' ? 'المفردات' : key === 'grammar' ? 'القواعد' : 'القراءة';
+    if (forPrint) {
+      html += `<h3 style="font-size:11px;color:#0f4c81;margin:10px 0 6px;">${label} — ${correctCount}/${list.length}</h3>`;
+      html += `<div style="border:1px solid #ccc;border-radius:8px;padding:6px 12px;">`;
+      list.forEach(r => {
+        const userText = r.userAns === null ? 'لم يُجب' : r.options[r.userAns];
+        const correctText = r.options[r.correct];
+        html += `<div class="review-item ${r.isCorrect ? 'correct-item' : 'wrong-item'}">`;
+        html += `<div class="rq"><span class="n">${r.qi+1}.</span> ${escapeHTML(r.q)}</div>`;
+        html += `<div class="ans-line"><span class="tag ${r.isCorrect ? 'ok' : 'bad'}">${r.isCorrect ? 'إجابة الطالب ✓' : 'إجابة الطالب ✗'}</span><span>${escapeHTML(userText)}</span></div>`;
+        if (!r.isCorrect) html += `<div class="ans-line"><span class="tag correct">الصحيح</span><span>${escapeHTML(correctText)}</span></div>`;
+        html += `<div class="explain">${escapeHTML(r.explain)}</div></div>`;
+      });
+      html += `</div>`;
+    } else {
+      html += `<details class="review-block"><summary>${label} — ${correctCount}/${list.length} صحيحة</summary><div class="inner">`;
+      list.forEach(r => {
+        const userText = r.userAns === null ? 'لم تُجب' : r.options[r.userAns];
+        html += `<div class="review-item ${r.isCorrect ? 'correct-item' : 'wrong-item'}">`;
+        html += `<div class="rq"><span class="n">${r.qi+1}.</span> ${escapeHTML(r.q)}</div>`;
+        html += `<div class="ans-line"><span class="tag ${r.isCorrect ? 'ok' : 'bad'}">${r.isCorrect ? 'إجابتك ✓' : 'إجابتك ✗'}</span><span>${escapeHTML(userText)}</span></div>`;
+        if (!r.isCorrect) html += `<div class="ans-line"><span class="tag correct">الصحيح</span><span>${escapeHTML(r.options[r.correct])}</span></div>`;
+        html += `<div class="explain">${escapeHTML(r.explain)}</div></div>`;
+      });
+      html += `</div></details>`;
+    }
+  });
+  html += '</div>';
+  return html;
+}
+
+function savePDF() {
+  // فتح كل التفاصيل قبل الطباعة لضمان ظهورها في PDF
+  document.querySelectorAll('details').forEach(d => d.open = true);
+  setTimeout(() => { window.print(); }, 200);
+}
+
+function toggleReview() {
+  const container = document.getElementById('review-container');
+  const btn = document.getElementById('review-toggle-btn');
+  const open = container.style.display === 'none';
+  container.style.display = open ? 'block' : 'none';
+  btn.textContent = open ? 'إخفاء مراجعة الإجابات ▴' : 'عرض مراجعة الإجابات ▾';
+}
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function restartTest() {
+  document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(i => i.checked = false);
+  const ta = document.getElementById('writing-textarea');
+  if (ta) { ta.value = ''; updateWordCount(); }
+  const nameInput = document.getElementById('student-name');
+  if (nameInput) nameInput.value = '';
+  studentName = ''; submissionDate = '';
+  document.getElementById('results-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  currentSection = 0;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
